@@ -2,6 +2,10 @@ body, html {
   border: 0;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: #1b1c20;
 }
 
 .container {
@@ -9,8 +13,6 @@ body, html {
   flex-direction: column;
   width: 100%;
   height: auto;
-  background-color: #1b1c20;
-
 }
 
 .line {
@@ -24,4 +26,14 @@ body, html {
 
 .block {
   height: inherit;
+}
+
+.ref_message_cont {
+  width: inherit;
+  height: inherit;
+  right: 100px;
+  color: rgb(61, 61, 61);
+  font-family: sans-serif;
+  text-align: center;
+  font-size: 2rem;
 }
