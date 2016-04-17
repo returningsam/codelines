@@ -1,0 +1,27 @@
+body, html {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  background-color: #1b1c20;
+
+}
+
+.line {
+  min-height: 8px;
+  width: 100%;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  display: flex;
+  flex-direction: row;
+}
+
+.block {
+  height: inherit;
+}
