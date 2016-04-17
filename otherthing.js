@@ -184,6 +184,14 @@ function makeFuncCall() {
 }
 
 // returns a line
+function makelinebreak() {
+  // line
+  var line = document.createElement("div");
+  line.className += " line";
+  return line;
+}
+
+// returns a line
 function makeline(prevIndent) {
   // line
   var line = document.createElement("div");
@@ -352,15 +360,257 @@ function makeIf(prevIndent) {
   lineend.style.marginLeft = (prevIndent + indent).toString() + "px";
   lineend.appendChild(makeSmallThing());
   linelist.push(lineend);
+  if (randbool(0.3)) {
+    var linelist2 = makeElseIf(prevIndent);
+    for (var i = 0; i < linelist2.length; i++) {
+      linelist.push(linelist2[i]);
+    }
+  }
+  if (randbool(0.3)) {
+    var linelist2 = makeElse(prevIndent);
+    for (var i = 0; i < linelist2.length; i++) {
+      linelist.push(linelist2[i]);
+    }
+  }
+  linelist.push(makelinebreak());
   return linelist;
 
 }
 
-function makeElseIf() {
+function makeElseIf(prevIndent) {
+  var linelist = []
+  var line = document.createElement("div");
+  line.className += " line";
+  line.style.marginLeft = (prevIndent + indent).toString() + "px";
+
+  // if
+  var else_ = document.createElement("div");
+  else_.className = " block";
+  else_.style.width = (space*4).toString() + "px";
+  else_.style.backgroundColor = colors[5];
+  line.appendChild(else_);
+  line.appendChild(makeSpace());
+  // if
+  var if_ = document.createElement("div");
+  if_.className = " block";
+  if_.style.width = (space*2).toString() + "px";
+  if_.style.backgroundColor = colors[5];
+  line.appendChild(if_);
+
+
+  line.appendChild(makeSpace());
+  line.appendChild(makeSmallThing());
+
+  var choice1 = randnum(6);
+
+  if (choice1 == 0) {
+    // (variable)
+    line.appendChild(makeVar());
+  }
+  else if (choice1 == 1) {
+    // (functioncall)
+    blocklist = makeFuncCall();
+    for (var i = 0; i < blocklist.length; i++) {
+      line.appendChild(blocklist[i]);
+    }
+  }
+  else if (choice1 == 2) {
+    // (var op num)
+    line.appendChild(makeVar());
+    line.appendChild(makeOp());
+    line.appendChild(makeNum());
+  }
+  else if (choice1 == 3) {
+    // (num op var)
+    line.appendChild(makeNum());
+    line.appendChild(makeOp());
+    line.appendChild(makeVar());
+  }
+  else if (choice1 == 4) {
+    // (str op var)
+    line.appendChild(makeStr());
+    line.appendChild(makeOp());
+    line.appendChild(makeVar());
+  }
+  else {
+    // (var op str)
+    line.appendChild(makeVar());
+    line.appendChild(makeOp());
+    line.appendChild(makeStr());
+  }
+
+  line.appendChild(makeSmallThing());
+  line.appendChild(makeSpace());
+  line.appendChild(makeSmallThing());
+  linelist.push(line);
+
+  // Inside else if
+
+  for (var i = 0; i < randnum(10) +1; i++) {
+    var choice2 = randnum(3);
+    console.log("got here");
+    if (choice2 == 0) {
+      // just a line
+      linelist.push(makeline(prevIndent + indent));
+    }
+    else if (choice2 == 1) {
+      // another if
+      if (randboolconst()) {
+        linelist2 = makeIf(prevIndent + indent);
+        for (var i = 0; i < linelist2.length; i++) {
+          linelist.push(linelist2[i]);
+        }
+      }
+    }
+    else if (choice2 == 6) {
+      // for loop
+      linelist = makefor(prevIndent + indent);
+      for (var line in linelist) {
+        linelist.push(line);
+      }
+    }
+    else if (choice2 == 6) {
+      // while loop
+      linelist = makewhile(prevIndent + indent);
+      for (var i = 0; i < linelist.length; i++) {
+        linelist.push(linelist[i]);
+      }
+    }
+    else if (choice2 == 2) {
+      // return
+      linelist.push(makeRet(prevIndent + indent));
+      break;
+    }
+  }
+
+
+  var lineend = document.createElement("div");
+  lineend.className += " line";
+  lineend.style.marginLeft = (prevIndent + indent).toString() + "px";
+  lineend.appendChild(makeSmallThing());
+  linelist.push(lineend);
+  if (randbool(0.2)) {
+    var linelist2 = makeElseIf(prevIndent);
+    for (var i = 0; i < linelist2.length; i++) {
+      linelist.push(linelist2[i]);
+    }
+  }
+  return linelist;
 
 }
 
-function makeElse() {
+function makeElse(prevIndent) {
+  var linelist = []
+  var line = document.createElement("div");
+  line.className += " line";
+  line.style.marginLeft = (prevIndent + indent).toString() + "px";
+
+  // else
+  var else_ = document.createElement("div");
+  else_.className = " block";
+  else_.style.width = (space*4).toString() + "px";
+  else_.style.backgroundColor = colors[5];
+  line.appendChild(else_);
+  line.appendChild(makeSpace());
+
+  line.appendChild(makeSpace());
+  line.appendChild(makeSmallThing());
+
+  var choice1 = randnum(6);
+
+  if (choice1 == 0) {
+    // (variable)
+    line.appendChild(makeVar());
+  }
+  else if (choice1 == 1) {
+    // (functioncall)
+    blocklist = makeFuncCall();
+    for (var i = 0; i < blocklist.length; i++) {
+      line.appendChild(blocklist[i]);
+    }
+  }
+  else if (choice1 == 2) {
+    // (var op num)
+    line.appendChild(makeVar());
+    line.appendChild(makeOp());
+    line.appendChild(makeNum());
+  }
+  else if (choice1 == 3) {
+    // (num op var)
+    line.appendChild(makeNum());
+    line.appendChild(makeOp());
+    line.appendChild(makeVar());
+  }
+  else if (choice1 == 4) {
+    // (str op var)
+    line.appendChild(makeStr());
+    line.appendChild(makeOp());
+    line.appendChild(makeVar());
+  }
+  else {
+    // (var op str)
+    line.appendChild(makeVar());
+    line.appendChild(makeOp());
+    line.appendChild(makeStr());
+  }
+
+  line.appendChild(makeSmallThing());
+  line.appendChild(makeSpace());
+  line.appendChild(makeSmallThing());
+  linelist.push(line);
+
+  // Inside else
+
+  for (var i = 0; i < randnum(10) +1; i++) {
+    var choice2 = randnum(3);
+    console.log("got here");
+    if (choice2 == 0) {
+      // just a line
+      linelist.push(makeline(prevIndent + indent));
+    }
+    else if (choice2 == 1) {
+      // another if
+      if (randboolconst()) {
+        linelist2 = makeIf(prevIndent + indent);
+        for (var i = 0; i < linelist2.length; i++) {
+          linelist.push(linelist2[i]);
+        }
+      }
+    }
+    else if (choice2 == 6) {
+      // for loop
+      linelist = makefor(prevIndent + indent);
+      for (var line in linelist) {
+        linelist.push(line);
+      }
+    }
+    else if (choice2 == 6) {
+      // while loop
+      linelist = makewhile(prevIndent + indent);
+      for (var i = 0; i < linelist.length; i++) {
+        linelist.push(linelist[i]);
+      }
+    }
+    else if (choice2 == 2) {
+      // return
+      linelist.push(makeRet(prevIndent + indent));
+      break;
+    }
+  }
+
+
+  var lineend = document.createElement("div");
+  lineend.className += " line";
+  lineend.style.marginLeft = (prevIndent + indent).toString() + "px";
+  lineend.appendChild(makeSmallThing());
+  linelist.push(lineend);
+  if (randbool(0.2)) {
+    var linelist2 = makeElseIf(prevIndent);
+    for (var i = 0; i < linelist2.length; i++) {
+      linelist.push(linelist2[i]);
+    }
+  }
+  return linelist;
 
 }
 
