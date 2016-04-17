@@ -8,6 +8,13 @@ body, html {
   background-color: #1b1c20;
 }
 
+a {
+  font-family: sans-serif;
+  font-size: 1rem;
+  text-decoration: none;
+  text-align: center;
+}
+
 .container {
   display: flex;
   flex-direction: column;
