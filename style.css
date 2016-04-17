@@ -13,6 +13,7 @@ a {
   font-size: 1rem;
   text-decoration: none;
   text-align: center;
+  color: rgb(61, 61, 61);
 }
 
 .container {
@@ -43,4 +44,8 @@ a {
   font-family: sans-serif;
   text-align: center;
   font-size: 2rem;
+}
+
+.ref_message_cont p{
+  margin-bottom: 0;
 }
