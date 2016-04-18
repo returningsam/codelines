@@ -1,5 +1,5 @@
 
-var colors = ["#993240","#9a5726","#94873d","#494c55","#85878b","#537d4b","#3b788f","#494c55","#85878b","#494c55","#85878b","#494c55","#85878b","#85878b","#85878b","#85878b","#85878b","#85878b","#85878b","#85878b","#85878b","#85878b"];
+var colors = ["#993240","#9a5726","#94873d","#494c55","#85878b","#537d4b","#3b788f"];
 
 var bgColor = "#1b1c20"
 
@@ -34,6 +34,15 @@ function makeOp() {
 }
 
 // returns a block
+function makeIn() {
+  var operator = document.createElement("div");
+  operator.className = " block";
+  operator.style.width = (space*2).toString() + "px";
+  operator.style.backgroundColor = colors[0];
+  return operator;
+}
+
+// returns a block
 function makeFuncCallName() {
   var funccallname = document.createElement("div");
   funccallname.className = " block";
@@ -48,6 +57,15 @@ function makeNum() {
   num.className = " block";
   num.style.width = randlen(10,1);
   num.style.backgroundColor = colors[1];
+  return num;
+}
+
+// returns a block
+function makeVarIndicator() {
+  var num = document.createElement("div");
+  num.className = " block";
+  num.style.width = (space*3).toString() + "px";
+  num.style.backgroundColor = colors[0];
   return num;
 }
 
@@ -151,9 +169,7 @@ function makeFuncCall() {
   }
   if (choice1 == 1) {
     // (variable)
-    retlist.push(makeSpace());
     retlist.push(makeVar());
-    retlist.push(makeSpace());
   }
   else if (choice1 == 2) {
     // (string)
@@ -200,6 +216,10 @@ function makeline(prevIndent) {
   var choice1 = randnum(2);
 
   if (choice1 === 0) {
+    if (randboolconst()) {
+      line.appendChild(makeVarIndicator());
+      line.appendChild(makeSpace());
+    }
     line.appendChild(makeVar());
     var choice2 = randnum(2);
     if (choice2 === 0) {
@@ -320,34 +340,36 @@ function makeIf(prevIndent) {
   // Inside if
 
   for (var i = 0; i < randnum(10) +1; i++) {
-    var choice2 = randnum(3);
-    console.log("got here");
-    if (choice2 == 0) {
+    var choice2 = randnum(7);
+
+    if (choice2 == 0 || choice2 == 1 || choice2 == 2 || choice2 == 3) {
       // just a line
       linelist.push(makeline(prevIndent + indent));
     }
-    else if (choice2 == 1) {
+    else if (choice2 == 4) {
       // another if
-      linelist2 = makeIf(prevIndent + indent);
+      if (randboolconst()) {
+        linelist2 = makeIf(prevIndent + indent);
+        for (var i = 0; i < linelist2.length; i++) {
+          linelist.push(linelist2[i]);
+        }
+      }
+    }
+    else if (choice2 == 5) {
+      // for loop
+      linelist2 = makefor(prevIndent + indent);
+      for (var i = 0; i < linelist2.length; i++) {
+        linelist.push(linelist2[i]);
+      }
+    }
+    else if (choice2 == 9) {
+      // while loop
+      linelist2 = makewhile(prevIndent + indent);
       for (var i = 0; i < linelist2.length; i++) {
         linelist.push(linelist2[i]);
       }
     }
     else if (choice2 == 6) {
-      // for loop
-      linelist = makefor(prevIndent + indent);
-      for (var line in linelist) {
-        linelist.push(line);
-      }
-    }
-    else if (choice2 == 6) {
-      // while loop
-      linelist = makewhile(prevIndent + indent);
-      for (var i = 0; i < linelist.length; i++) {
-        linelist.push(linelist[i]);
-      }
-    }
-    else if (choice2 == 2) {
       // return
       linelist.push(makeRet(prevIndent + indent));
       break;
@@ -447,13 +469,13 @@ function makeElseIf(prevIndent) {
   // Inside else if
 
   for (var i = 0; i < randnum(10) +1; i++) {
-    var choice2 = randnum(3);
-    console.log("got here");
-    if (choice2 == 0) {
+    var choice2 = randnum(7);
+
+    if (choice2 == 0 || choice2 == 1 || choice2 == 2 || choice2 == 3) {
       // just a line
       linelist.push(makeline(prevIndent + indent));
     }
-    else if (choice2 == 1) {
+    else if (choice2 == 4) {
       // another if
       if (randboolconst()) {
         linelist2 = makeIf(prevIndent + indent);
@@ -462,21 +484,21 @@ function makeElseIf(prevIndent) {
         }
       }
     }
-    else if (choice2 == 6) {
+    else if (choice2 == 5) {
       // for loop
-      linelist = makefor(prevIndent + indent);
-      for (var line in linelist) {
-        linelist.push(line);
+      linelist2 = makefor(prevIndent + indent);
+      for (var i = 0; i < linelist2.length; i++) {
+        linelist.push(linelist2[i]);
+      }
+    }
+    else if (choice2 == 9) {
+      // while loop
+      linelist2 = makewhile(prevIndent + indent);
+      for (var i = 0; i < linelist2.length; i++) {
+        linelist.push(linelist2[i]);
       }
     }
     else if (choice2 == 6) {
-      // while loop
-      linelist = makewhile(prevIndent + indent);
-      for (var i = 0; i < linelist.length; i++) {
-        linelist.push(linelist[i]);
-      }
-    }
-    else if (choice2 == 2) {
       // return
       linelist.push(makeRet(prevIndent + indent));
       break;
@@ -513,7 +535,6 @@ function makeElse(prevIndent) {
   line.appendChild(else_);
   line.appendChild(makeSpace());
 
-  line.appendChild(makeSpace());
   line.appendChild(makeSmallThing());
 
   var choice1 = randnum(6);
@@ -562,13 +583,13 @@ function makeElse(prevIndent) {
   // Inside else
 
   for (var i = 0; i < randnum(10) +1; i++) {
-    var choice2 = randnum(3);
-    console.log("got here");
-    if (choice2 == 0) {
+    var choice2 = randnum(7);
+
+    if (choice2 == 0 || choice2 == 1 || choice2 == 2 || choice2 == 3) {
       // just a line
       linelist.push(makeline(prevIndent + indent));
     }
-    else if (choice2 == 1) {
+    else if (choice2 == 4) {
       // another if
       if (randboolconst()) {
         linelist2 = makeIf(prevIndent + indent);
@@ -577,21 +598,21 @@ function makeElse(prevIndent) {
         }
       }
     }
-    else if (choice2 == 6) {
+    else if (choice2 == 5) {
       // for loop
-      linelist = makefor(prevIndent + indent);
-      for (var line in linelist) {
-        linelist.push(line);
+      linelist2 = makefor(prevIndent + indent);
+      for (var i = 0; i < linelist2.length; i++) {
+        linelist.push(linelist2[i]);
+      }
+    }
+    else if (choice2 == 9) {
+      // while loop
+      linelist2 = makewhile(prevIndent + indent);
+      for (var i = 0; i < linelist2.length; i++) {
+        linelist.push(linelist2[i]);
       }
     }
     else if (choice2 == 6) {
-      // while loop
-      linelist = makewhile(prevIndent + indent);
-      for (var i = 0; i < linelist.length; i++) {
-        linelist.push(linelist[i]);
-      }
-    }
-    else if (choice2 == 2) {
       // return
       linelist.push(makeRet(prevIndent + indent));
       break;
@@ -614,13 +635,101 @@ function makeElse(prevIndent) {
 
 }
 
-function makefor() {
+function makefor(prevIndent) {
+  var linelist = []
+  var line = document.createElement("div");
+  line.className += " line";
+  line.style.marginLeft = (prevIndent + indent).toString() + "px";
 
+  // for
+  var for_ = document.createElement("div");
+  for_.className = " block";
+  for_.style.width = (space*4).toString() + "px";
+  for_.style.backgroundColor = colors[5];
+  line.appendChild(for_);
+  line.appendChild(makeSpace());
 
+  line.appendChild(makeSmallThing());
 
-  for (var variable in object) {
+  var choice1 = randnum(2);
 
+  if (choice1 == 0) {
+    // for each
+    line.appendChild(makeVarIndicator());
+    line.appendChild(makeSpace());
+    line.appendChild(makeVar());
+    line.appendChild(makeSpace());
+    line.appendChild(makeIn());
+    line.appendChild(makeSpace());
+    line.appendChild(makeVar());
   }
+  else if (choice1 == 1) {
+    // for i
+    line.appendChild(makeVarIndicator());
+    line.appendChild(makeSpace());
+    line.appendChild(makeSmallThing());
+    line.appendChild(makeOp());
+    line.appendChild(makeNum());
+    line.appendChild(makeSmallThing());
+    line.appendChild(makeSpace());
+    line.appendChild(makeSmallThing());
+    line.appendChild(makeOp());
+    line.appendChild(makeVar());
+    line.appendChild(makeSmallThing());
+    line.appendChild(makeSpace());
+    line.appendChild(makeSmallThing());
+    line.appendChild(makeIn());
+  }
+  line.appendChild(makeSmallThing());
+  line.appendChild(makeSpace());
+  line.appendChild(makeSmallThing());
+  linelist.push(line);
+
+  // Inside for loop
+
+  for (var i = 0; i < randnum(10) +1; i++) {
+    var choice2 = randnum(7);
+
+    if (choice2 == 0 || choice2 == 1 || choice2 == 2 || choice2 == 3) {
+      // just a line
+      linelist.push(makeline(prevIndent + indent));
+    }
+    else if (choice2 == 4) {
+      // another if
+      if (randboolconst()) {
+        linelist2 = makeIf(prevIndent + indent);
+        for (var i = 0; i < linelist2.length; i++) {
+          linelist.push(linelist2[i]);
+        }
+      }
+    }
+    else if (choice2 == 5) {
+      // for loop
+      linelist2 = makefor(prevIndent + indent);
+      for (var i = 0; i < linelist2.length; i++) {
+        linelist.push(linelist2[i]);
+      }
+    }
+    else if (choice2 == 9) {
+      // while loop
+      linelist2 = makewhile(prevIndent + indent);
+      for (var i = 0; i < linelist2.length; i++) {
+        linelist.push(linelist2[i]);
+      }
+    }
+    else if (choice2 == 6) {
+      // return
+      linelist.push(makeRet(prevIndent + indent));
+      break;
+    }
+  }
+
+  var lineend = document.createElement("div");
+  lineend.className += " line";
+  lineend.style.marginLeft = (prevIndent + indent).toString() + "px";
+  lineend.appendChild(makeSmallThing());
+  linelist.push(lineend);
+  return linelist
 }
 
 function makewhile() {
