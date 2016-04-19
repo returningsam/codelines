@@ -50,3 +50,9 @@ a {
 .ref_message_cont p{
   margin-bottom: 0;
 }
+
+
+.textblock {
+  font-size: 0.3rem;
+  font-family: monospace;
+}
