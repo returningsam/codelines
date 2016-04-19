@@ -6,3 +6,9 @@ Modeled after the the mini-map extension for the Atom text editor: https://atom.
 See it in action @ http://codelines.xyz
 
 index.html and thing.js are the old and less complex versions of the implementation.
+
+
+# Next Steps:
+
+- convert colored boxes into syntactically correct javascript code (Javascr-ipsum)
+- make it only generate semantically correct javascript. (random functionalities (wut))
