@@ -10,5 +10,5 @@ index.html and thing.js are the old and less complex versions of the implementat
 
 # Next Steps:
 
-- convert colored boxes into syntactically correct javascript code (Javascr-ipsum)
+- convert colored boxes into syntactically correct javascript code (Javascr-ipsum) (textindex.html and textthing.js)
 - make it only generate semantically correct javascript. (random functionalities (wut))
