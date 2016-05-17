@@ -45,7 +45,7 @@ function dothathing(previndent, prevprob, depth, prevperline) {
   }
 }
 
-window.onload = function() {
+function create_bars() {
   var breakline = document.createElement("div");
   breakline.className += " line";
   document.getElementById("container").appendChild(breakline);
@@ -68,7 +68,15 @@ window.onload = function() {
         document.getElementById("container").appendChild(breakline);
       }
     }
-
-
   }
+}
+
+function enter_refresh(e) {
+  if (e.keyCode == 13) {
+    return create_bars();
+  }
+}
+
+window.onload = function() {
+  return create_bars();
 }

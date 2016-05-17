@@ -14,6 +14,8 @@ a {
   text-decoration: none;
   text-align: center;
   color: rgb(61, 61, 61);
+  -webkit-transition: color 1s; /* Safari */
+    transition: color 1s;
 }
 
 .container {
@@ -51,8 +53,17 @@ a {
   margin-bottom: 0;
 }
 
+.links {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 40%;
+  padding-right: 40%;
+  margin-top: 10px;
+}
 
-.textblock {
-  font-size: 0.3rem;
-  font-family: monospace;
+.links a:hover {
+  color: rgb(187, 187, 187);
+  -webkit-transition: color 0.5s; /* Safari */
+    transition: color 0.5s;
 }
